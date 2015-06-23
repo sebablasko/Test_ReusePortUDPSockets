@@ -24,9 +24,10 @@ do
 	{
 		echo "Repeticion $i"
 		echo "" > aux
-		for ((k=1 ; $k<=$num_sockets ; k++))
+		for ((k=0 ; $k<$num_sockets ; k++))
 		{
-			./server --packets $(($MAX_PACKS/num_sockets)) --threads $num_threads_per_socket --port $num_port --reuseport >> aux &
+			#./server --packets $(($MAX_PACKS/num_sockets)) --threads $num_threads_per_socket --port $num_port --reuseport >> aux &
+			./server --scheduler dummySched --setcpu $(($k%$(nproc))) --packets $(($MAX_PACKS/num_sockets)) --threads $num_threads_per_socket --port $num_port --reuseport >> aux &
 		}
 
 		sleep 1

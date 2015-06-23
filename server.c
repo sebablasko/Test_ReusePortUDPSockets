@@ -32,6 +32,7 @@ int DESTINATION_PORT = DEFAULT_PORT;
 int reuseport = 0;
 double segundos;
 char* schedu = "SO";
+int cpuAssign = 0;
 
 int llamadaHilo(int socket_fd){
 	char buf[BUF_SIZE];
@@ -97,6 +98,7 @@ int main(int argc, char **argv){
 			{"threads", required_argument, 0, 't'},
 			{"port", required_argument, 0, 'p'},
 			{"scheduler", required_argument, 0, 's'},
+			{"setcpu", required_argument, 0, 'c'},
 			//{"cpudistributed", no_argument, 0, 'c'},
 			{"reuseport", no_argument, 0, 'r'},
 			{"verbose", no_argument, 0, 'v'},
@@ -138,6 +140,10 @@ int main(int argc, char **argv){
 
 			case 's':
 				schedu = optarg;
+				break;
+
+			case 'c':
+				cpuAssign = atoi(optarg);
 				break;
 
 			default:
@@ -194,9 +200,9 @@ int main(int argc, char **argv){
 				pthread_attr_setaffinity_np(&attr, sizeof(cpu_set_t), &cpus);
 				pthread_create(&pids[i], &attr, llamadaHilo, socket_fd);
 		}else if(strcmp(schedu,dummySched)==0){
-				// Caso afinidad rigida, todos los threads a cpu 0
 				CPU_ZERO(&cpus);
-				CPU_SET(0, &cpus);
+				//CPU_SET(0, &cpus);
+				CPU_SET(cpuAssign, &cpus);
 				pthread_attr_setaffinity_np(&attr, sizeof(cpu_set_t), &cpus);
 				pthread_create(&pids[i], &attr, llamadaHilo, socket_fd);
 		}else if(strcmp(schedu,pairSched)==0){

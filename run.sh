@@ -7,11 +7,11 @@ echo "Done"
 salida=reuseport_sockets_stress.csv
 
 MAX_PACKS=1000000
-total_sockets="1 2 4 8"
+total_sockets="1 2 4 8 16 24 32 64 128"
 num_threads_per_socket=1
 total_clients=4
 num_port=1820
-repetitions=5
+repetitions=20
 
 echo "Ejecutando Prueba..."
 for num_sockets in $total_sockets
@@ -41,7 +41,7 @@ do
 		linea="$linea$(cat aux)"
 	}
 	echo $linea
-	echo "$linea" >> $salida
+	echo "$linea" > $salida
 	echo ""
 	rm aux
 done

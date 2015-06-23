@@ -41,7 +41,7 @@ do
 		linea="$linea$(cat aux)"
 	}
 	echo $linea
-	echo "$linea" > $salida
+	echo "$linea" >> $salida
 	echo ""
 	rm aux
 done

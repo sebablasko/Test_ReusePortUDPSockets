@@ -5,11 +5,11 @@ make all
 echo "Done"
 
 MAX_PACKS=1000000
-total_sockets="1 2 4 8"
-total_num_threads_per_socket="1 2 4 8"
+total_sockets="1 2 4 8 16 24 32 48 64 128"
+total_num_threads_per_socket="1 2 4 8 16 24 32"
 total_clients=4
 num_port=1820
-repetitions=3
+repetitions=20
 
 
 for num_threads_per_socket in $total_num_threads_per_socket

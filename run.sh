@@ -22,7 +22,7 @@ do
 	do
 
 		linea=$num_sockets";"
-		echo "sockets: $num_sockets"
+		echo "sockets: $num_sockets, threads: $num_threads_per_socket"
 
 		for ((i=1 ; $i<=$repetitions ; i++))
 		{
@@ -53,14 +53,14 @@ do
 	sed 's/;//g' $salida | sed 's/,//g' | sed 's/\./,/g' > 'fix_'$salida
 
 
-	salida="reuseport_sockets_stress_EtitativeSched_"$num_threads_per_socket"Threads_per_socket.csv"
+	salida="reuseport_sockets_stress_EquitativeSched_"$num_threads_per_socket"Threads_per_socket.csv"
 
 	echo "Ejecutando Prueba... $salida"
 	for num_sockets in $total_sockets
 	do
 
 		linea=$num_sockets";"
-		echo "sockets: $num_sockets"
+		echo "sockets: $num_sockets, threads: $num_threads_per_socket"
 
 		for ((i=1 ; $i<=$repetitions ; i++))
 		{
@@ -98,7 +98,7 @@ do
 	do
 
 		linea=$num_sockets";"
-		echo "sockets: $num_sockets"
+		echo "sockets: $num_sockets, threads: $num_threads_per_socket"
 
 		for ((i=1 ; $i<=$repetitions ; i++))
 		{

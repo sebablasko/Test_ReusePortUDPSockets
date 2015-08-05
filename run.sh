@@ -5,20 +5,20 @@ make all
 echo "Done"
 
 MAX_PACKS=1000000
-total_sockets="2 3"
-total_num_threads_per_socket="3 4"
+total_sockets="1 2 4 8 16 24 32 48 64 72 96 128"
+total_num_threads_per_socket="1 2 4 8 16 24 32 64"
 total_clients=4
 num_port=1820
-repetitions=2
+repetitions=50
 
 
 for num_threads_per_socket in $total_num_threads_per_socket
 do
 
 
-	if (($num_threads_per_socket >= 0 & $num_threads_per_socket < 10)); then salida="reuseport_sockets_stress_SOSched_00"$num_threads_per_socket"_ThreadsBySocket.csv"; fi
-	if (($num_threads_per_socket >= 10 & $num_threads_per_socket < 100)); then salida="reuseport_sockets_stress_SOSched_0"$num_threads_per_socket"_ThreadsBySocket.csv"; fi
-	if (($num_threads_per_socket >= 100)); then salida="reuseport_sockets_stress_SOSched_"$num_threads_per_socket"_ThreadsBySocket.csv"; fi
+	if (($num_threads_per_socket >= 0 & $num_threads_per_socket < 10)); then salida="reuseportStress_SOSched_00"$num_threads_per_socket"_ThreadsBySocket.csv"; fi
+	if (($num_threads_per_socket >= 10 & $num_threads_per_socket < 100)); then salida="reuseportStress_SOSched_0"$num_threads_per_socket"_ThreadsBySocket.csv"; fi
+	if (($num_threads_per_socket >= 100)); then salida="reuseportStress_SOSched_"$num_threads_per_socket"_ThreadsBySocket.csv"; fi
 
 	echo "Ejecutando Prueba... $salida"
 	for num_sockets in $total_sockets
@@ -58,9 +58,9 @@ do
 
 
 
-	if (($num_threads_per_socket >= 0 & $num_threads_per_socket < 10)); then salida="reuseport_sockets_stress_EquitativeSched_00"$num_threads_per_socket"_ThreadsBySocket.csv"; fi
-	if (($num_threads_per_socket >= 10 & $num_threads_per_socket < 100)); then salida="reuseport_sockets_stress_EquitativeSched_0"$num_threads_per_socket"_ThreadsBySocket.csv"; fi
-	if (($num_threads_per_socket >= 100)); then salida="reuseport_sockets_stress_EquitativeSched_"$num_threads_per_socket"_ThreadsBySocket.csv"; fi
+	if (($num_threads_per_socket >= 0 & $num_threads_per_socket < 10)); then salida="reuseportStress_EquitativeSched_00"$num_threads_per_socket"_ThreadsBySocket.csv"; fi
+	if (($num_threads_per_socket >= 10 & $num_threads_per_socket < 100)); then salida="reuseportStress_EquitativeSched_0"$num_threads_per_socket"_ThreadsBySocket.csv"; fi
+	if (($num_threads_per_socket >= 100)); then salida="reuseportStress_EquitativeSched_"$num_threads_per_socket"_ThreadsBySocket.csv"; fi
 
 	echo "Ejecutando Prueba... $salida"
 	for num_sockets in $total_sockets
@@ -100,9 +100,9 @@ do
 
 
 
-	if (($num_threads_per_socket >= 0 & $num_threads_per_socket < 10)); then salida="reuseport_sockets_stress_All0Sched_00"$num_threads_per_socket"_ThreadsBySocket.csv"; fi
-	if (($num_threads_per_socket >= 10 & $num_threads_per_socket < 100)); then salida="reuseport_sockets_stress_All0Sched_0"$num_threads_per_socket"_ThreadsBySocket.csv"; fi
-	if (($num_threads_per_socket >= 100)); then salida="reuseport_sockets_stress_All0Sched_"$num_threads_per_socket"_ThreadsBySocket.csv"; fi
+	if (($num_threads_per_socket >= 0 & $num_threads_per_socket < 10)); then salida="reuseportStress_All0Sched_00"$num_threads_per_socket"_ThreadsBySocket.csv"; fi
+	if (($num_threads_per_socket >= 10 & $num_threads_per_socket < 100)); then salida="reuseportStress_All0Sched_0"$num_threads_per_socket"_ThreadsBySocket.csv"; fi
+	if (($num_threads_per_socket >= 100)); then salida="reuseportStress_All0Sched_"$num_threads_per_socket"_ThreadsBySocket.csv"; fi
 
 	echo "Ejecutando Prueba... $salida"
 	for num_sockets in $total_sockets

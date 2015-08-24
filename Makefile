@@ -1,4 +1,5 @@
 all: server client
+
 prof: serverProfiling client
 
 server: server.o ../ssocket/ssocket.o

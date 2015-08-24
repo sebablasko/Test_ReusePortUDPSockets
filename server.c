@@ -36,49 +36,20 @@ char* schedu = "SO";
 int cpuAssign = 0;
 
 
-int llamadaHilo(int socket_fd){
-	char buf[BUF_SIZE];
-	int lectura;
-
-	if(mostrarInfo) printf("Socket Operativo: %d, \t CPU: %d\n", socket_fd, sched_getcpu());
-
-	int i;
-	int paquetesParaAtender = MAX_PACKS/NTHREADS;
-
-	for(i = 0; i < paquetesParaAtender; i++) {
-		//lectura = recv(socket_fd, buf, BUF_SIZE, 0);
-		lectura = read(socket_fd, buf, BUF_SIZE);
-		if(lectura <= 0) {
-			fprintf(stderr, "Error en el read del socket (%d)\n", lectura);
-			exit(1);
-		}
-		if(first_pack==0) { 
-			pthread_mutex_lock(&lock);
-			if(first_pack == 0) {
-				if(mostrarInfo)	printf("got first pack\n");
-				first_pack = 1;
-				//Medir Inicio
-				gettimeofday(&dateInicio, NULL);
-			}
-			pthread_mutex_unlock(&lock);
-		}
-	}
-
-	if(mostrarInfo) printf("Fin Socket Operativo: %d, \t CPU: %d\n", socket_fd, sched_getcpu());
-}
-
 void print_usage(){
-    printf("Uso: ./server [cpudistributed] [verbose] --packets <num> --threads <num> --port <num>\n");
+    printf("Uso: ./server [--verbose] --packets <num> --threads <num> --port <num> [--reuseport] [--scheduler <SchedSchemmaName> --setcpu <num>]\n");
 }
 
 void print_config(){
     printf("Detalles de la prueba:\n");
     printf("\tPuerto a escuchar:\t%d\n", DESTINATION_PORT);
-    printf("\tPaquetes a recibir:\t%d\n", MAX_PACKS);
+    printf("\tPaquetes a recibir:\t%d de %d bytes\n", MAX_PACKS, BUF_SIZE);
     printf("\tUso de ReusePort:\t");
     reuseport ? printf("Activado\n") : printf("Apagado\n");
     printf("\tThreads que compartirán el socket:\t%d\n", NTHREADS);
     printf("\tScheduller usado:\t%s\n",schedu);
+    printf("\tAsignación a CPU:\t");
+	strcmp(schedu,dummySched)==0 ? printf("CPU %d\n", cpuAssign) : printf("Segun SO\n");
 }
 
 void parseArgs(int argc, char **argv){
@@ -141,6 +112,37 @@ void parseArgs(int argc, char **argv){
 				exit(1);
          }
 	}
+}
+
+void llamadaHilo(int socket_fd){
+	char buf[BUF_SIZE];
+	int lectura;
+
+	if(mostrarInfo) printf("Socket Operativo: %d, \t CPU: %d\n", socket_fd, sched_getcpu());
+
+	int i;
+	int paquetesParaAtender = MAX_PACKS/NTHREADS;
+
+	for(i = 0; i < paquetesParaAtender; i++) {
+		//lectura = recv(socket_fd, buf, BUF_SIZE, 0);
+		lectura = read(socket_fd, buf, BUF_SIZE);
+		if(lectura <= 0) {
+			fprintf(stderr, "Error en el read del socket (%d)\n", lectura);
+			exit(1);
+		}
+		if(first_pack==0) { 
+			pthread_mutex_lock(&lock);
+			if(first_pack == 0) {
+				if(mostrarInfo)	printf("got first pack\n");
+				first_pack = 1;
+				//Medir Inicio
+				gettimeofday(&dateInicio, NULL);
+			}
+			pthread_mutex_unlock(&lock);
+		}
+	}
+
+	if(mostrarInfo) printf("Fin Socket Operativo: %d, \t CPU: %d\n", socket_fd, sched_getcpu());
 }
 
 int main(int argc, char **argv){
